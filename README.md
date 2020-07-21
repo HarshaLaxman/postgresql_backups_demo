@@ -3,7 +3,7 @@ https://www.postgresql.org/docs/12/app-pgdump.html
 Contains logical instructions (SQL commands) to recreate the database.
 Not enough information to do point in time recovery.
 1. dump  (from the database server)   
-   `pg_dump demo > backup.dump`   
+   * `pg_dump demo > backup.dump`   
 2. create new db and restore  
    * `createdb demo_new`  
    * `psql -d demo_new -f backup.dump`
@@ -24,13 +24,13 @@ Contains physical (bytes) information of the database. Combine with WAL (write a
    * `touch recovery.signal`
 4. Wipe and restore database cluster (PGDATA) using basebackup and WAL
    * `pg_ctl stop`
-   * store the recent WALs 
+   * store recent WAL  
      `cp -r ./pg_wal/* /tmp/previous_wal/` 
    * `rm -rf ./*`
    * `cp -r /tmp/basebackup/* ./`
-   * delete the stale WAL from the basebackup  
+   * delete stale WAL from the basebackup  
      `rm -r ./pg_wal/*` 
-   * copy the recent WAL from the wiped DB  
+   * copy recent WAL from the wiped DB  
      `cp -r /tmp/previous_wal/* ./pg_wal/` 
 5. Restore
    * Set recovery config (in `postgresql.conf`)  
